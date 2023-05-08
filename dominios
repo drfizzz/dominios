@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dominoes</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Dominoes</h1>
+    <form>
+      <label for="bet-amount">Enter bet amount:</label>
+      <input type="number" id="bet-amount" name="bet-amount" min="1" max="100" value="10">
+      <button type="button" id="play-button">Play</button>
+    </form>
+    <div id="game-container"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
+CSS:
+
+css
+Copy code
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#game-container {
+  display: none;
+  margin: 0 auto;
+  width: 500px;
+  height: 300px;
+  border: 1px solid black;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+  text-align: center;
+}
+JavaScript:
+
+javascript
+Copy code
+// DOM elements
+const betAmountInput = document.getElementById("bet-amount");
+const playButton = document.getElementById("play-button");
+const gameContainer = document.getElementById("game-container");
+
+// Event listener for play button click
+playButton.addEventListener("click", function() {
+  const betAmount = parseInt(betAmountInput.value);
+  const result = playDominoes(betAmount);
+  
+  let message;
+  if (result === 0) {
+    message = "The game is a draw!";
+  } else if (result > 0) {
+    message = `You won ${result} coins!`;
+  } else {
+    message = `You lost ${-result} coins.`;
+  }
+  
+  alert(message);
+});
+
+// Game logic
+function playDominoes(betAmount) {
+  // Create an array of all possible dominoes
+  const dominoes = [];
+  for (let i = 0; i <= 6; i++) {
+    for (let j = i; j <= 6; j++) {
+      dominoes.push([i, j]);
+    }
+  }
+  
+  // Shuffle the array of dominoes
+  shuffle(dominoes);
+  
+  // Deal 7 dominoes to each player
+  const player1Hand = dominoes.slice(0, 7);
+  const player2Hand = dominoes.slice(7, 14);
+  
+  // Initialize the pot to the bet amount
+  let pot = betAmount * 2;
+  
+  // Initialize the board
+  let board = [];
+  
+  // Set up the game container
+  gameContainer.innerHTML = `
+    <div id="player1-hand"></div>
+    <div id="board"></div>
+    <div id="player2-hand"></div>
+    <div id="pot">Pot: ${pot}</div>
+  `;
+  const player1HandContainer = document.getElementById("player1-hand");
+  const boardContainer = document.getElementById("board");
+  const player2HandContainer = document.getElementById("player2-hand");
+  
+  // Draw the initial hands and board
+  drawHands(player1Hand, player2Hand);
+  drawBoard(board);
+  
+  // Play the game
+  let currentPlayer = 1;
+  while (player1Hand.length > 0 && player2Hand.length >
+
+
+
